@@ -7,7 +7,7 @@ use std::fs;
 
 pub struct BIOS {
 
-    data: Vec<u8>,
+    pub data: Vec<u8>,
 }
 
 impl BIOS{
