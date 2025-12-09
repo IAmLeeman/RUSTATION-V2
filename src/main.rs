@@ -3,8 +3,9 @@ mod cpu;
 mod memory;
 mod bios;
 
-use ram::Ram;
-use bios::BIOS;
+
+use memory::ram::Ram;
+use bios::bios::BIOS;
 
 fn main(){
     println!("Rustation V2 Booting");

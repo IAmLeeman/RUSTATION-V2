@@ -1,9 +1,9 @@
 const BIOS_SIZE: usize = 0x800000; // 512kb size of bios, SCPH701.BIN in this case
 const BIOS_START: usize = 0x000000; // FROM NOTHING
 
-mod memory;
+//use crate::memory::ram::Ram;
 
-use memory::ram::Ram;
+use std::fs;
 
 pub struct BIOS {
 
@@ -12,9 +12,14 @@ pub struct BIOS {
 
 impl BIOS{
 
-    pub fn new(bios_bytes: &[u8]) -> Self {
-        BIOS {
-            data: bios_bytes.toVec(),
-        }
+    pub fn load(path: &str) -> Result<Self, String> {
+        let bytes = fs::read(path)
+            .map_err(|e| format!("Failed to load BIOS: {}", e))?;
+        Ok(BIOS {data: bytes})
     }
+    
+    pub fn read(&self, addr: usize) -> u8 {
+        self.data[addr]
+    }
+    
 }
