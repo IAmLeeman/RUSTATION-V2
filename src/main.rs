@@ -14,7 +14,9 @@ extern crate sdl2;
 
 use sdl2::pixels::Color;
 use sdl2::event::Event;
+use sdl2::rect::Rect;
 use std::time::Duration;
+
 
 fn main() -> Result<(), String> {
 
@@ -36,9 +38,21 @@ fn main() -> Result<(), String> {
 
     let mut canvas = window.into_canvas().build().map_err(|e| e.to_string())?;
 
-    canvas.set_draw_color(Color::RGB(0, 0, 0));
-    canvas.clear();
-    canvas.present();
+    let ttf_context = sdl2::ttf::init().map_err(|e| e.to_string())?;
+    let font = ttf_context.load_font("VCR_OSD_MONO.ttf", 24)?;
+
+    let surface = font
+        .render("RUSTATION IS LOADING...")
+        .blended(Color::WHITE)
+        .unwrap();
+
+    let texture_creator = canvas.texture_creator();
+    let texture = texture_creator
+        .create_texture_from_surface(&surface)
+        .unwrap();
+
+    let target = Rect::new(20, 20, surface.width(), surface.height());
+    
 
     let mut event_pump = sdl_context.event_pump()?;
     'running: loop {
@@ -47,6 +61,13 @@ fn main() -> Result<(), String> {
                 break 'running;
             }
         }
+
+        canvas.set_draw_color(Color::RGB(0, 0, 0));
+        canvas.clear();
+
+        canvas.copy(&texture, None, Some(target)).unwrap();
+        canvas.present();
+
         ::std::thread::sleep(Duration::from_millis(16));
     }
 
