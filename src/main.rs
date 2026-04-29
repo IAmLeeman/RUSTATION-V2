@@ -41,7 +41,7 @@ fn main() -> Result<(), String> {
     let ttf_context = sdl2::ttf::init().map_err(|e| e.to_string())?;
     let font = ttf_context.load_font("VCR_OSD_MONO.ttf", 24)?;
 
-    let surface = font
+    let surface = font // Test 
         .render("RUSTATION IS LOADING...")
         .blended(Color::WHITE)
         .unwrap();
