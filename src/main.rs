@@ -1,14 +1,16 @@
 // RUSTATION //
 // ULTRAVIOLENCE //
-// 18/04/2026 //
+// 30/04/2026 //
 
 mod cpu;
 mod memory;
 mod bios;
+mod gpu;
 
 
 use memory::ram::Ram;
 use bios::bios::BIOS;
+
 
 extern crate sdl2;
 
@@ -17,8 +19,19 @@ use sdl2::event::Event;
 use sdl2::rect::Rect;
 use std::time::Duration;
 
+use crate::gpu::rasterizer::Vertex;
+
+
+
 
 fn main() -> Result<(), String> {
+
+    let v0 = Vertex {x: 1, y: 2};
+    
+    let v1 = Vertex {x: 2, y: 3};
+    let v2 = Vertex {x: 5, y: 2};
+    // let fb = FRAMEBUFFER;
+    let color= 5;
 
     println!("Rustation V2 Booting");
 
@@ -40,6 +53,8 @@ fn main() -> Result<(), String> {
 
     let ttf_context = sdl2::ttf::init().map_err(|e| e.to_string())?;
     let font = ttf_context.load_font("VCR_OSD_MONO.ttf", 24)?;
+
+    draw_triangle(fb, v0, v1, v2, color);
 
     let surface = font // Test 
         .render("RUSTATION IS LOADING...")
