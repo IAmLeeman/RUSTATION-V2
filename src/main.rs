@@ -84,9 +84,12 @@ fn main() -> Result<(), String> {
         let v1 = Vertex {x: 200, y: 300};
         let v2 = Vertex {x: 250, y: 250};
 
-        let color = 0xFFFF0000;
+        let color = 0xFFFF0000; // Colour of traingle
+        
+        
+        
         draw_triangle(&mut fb, v0, v1, v2, color); // Doesn't draw to the screen
-        println!("{:X}", fb.pixels[200 * fb.width + 100]);
+        
         ::std::thread::sleep(Duration::from_millis(100));
         canvas.clear();
 

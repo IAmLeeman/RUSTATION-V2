@@ -23,7 +23,7 @@ impl Framebuffer {
         }
     }
     #[inline]
-    fn set_pixel(&mut self, x: i32, y: i32, color: u32) {
+    pub fn set_pixel(&mut self, x: i32, y: i32, color: u32) {
         if x < 0 || y < 0 {
             return;
         }
