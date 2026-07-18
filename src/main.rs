@@ -1,6 +1,6 @@
 // RUSTATION //
 // ULTRAVIOLENCE //
-// 30/04/2026 //
+// 02/07/2026 //
 
 mod cpu;
 mod memory;
@@ -18,22 +18,23 @@ use sdl2::pixels::Color;
 use sdl2::event::Event;
 use sdl2::rect::Rect;
 use std::time::Duration;
+use std::time::Instant;
+use gpu::commands::draw_triangle; // Debug command to draw triangle
 
-use crate::gpu::rasterizer::Vertex;
+use crate::gpu::rasterizer::{Framebuffer, Vertex};
 
 
 
 
 fn main() -> Result<(), String> {
 
-    let v0 = Vertex {x: 1, y: 2};
-    
-    let v1 = Vertex {x: 2, y: 3};
-    let v2 = Vertex {x: 5, y: 2};
-    // let fb = FRAMEBUFFER;
-    let color= 5;
+    let start = Instant::now();
+    let elapsed = start.elapsed();
+    let mut fb = Framebuffer{width:640, height:480, pixels:vec![0; 640 * 480]};
+    //let color = 5;
 
     println!("Rustation V2 Booting");
+    println!("Time Elapsed: {:?}", elapsed);
 
     let mut memory = Ram::new();
     memory.write(0x1234, 42);
@@ -54,12 +55,13 @@ fn main() -> Result<(), String> {
     let ttf_context = sdl2::ttf::init().map_err(|e| e.to_string())?;
     let font = ttf_context.load_font("VCR_OSD_MONO.ttf", 24)?;
 
-    draw_triangle(fb, v0, v1, v2, color);
+    
 
     let surface = font // Test 
         .render("RUSTATION IS LOADING...")
         .blended(Color::WHITE)
         .unwrap();
+        
 
     let texture_creator = canvas.texture_creator();
     let texture = texture_creator
@@ -77,7 +79,15 @@ fn main() -> Result<(), String> {
             }
         }
 
-        canvas.set_draw_color(Color::RGB(0, 0, 0));
+        let v0 = Vertex {x: 100, y: 200};
+    
+        let v1 = Vertex {x: 200, y: 300};
+        let v2 = Vertex {x: 250, y: 250};
+
+        let color = 0xFFFF0000;
+        draw_triangle(&mut fb, v0, v1, v2, color); // Doesn't draw to the screen
+        println!("{:X}", fb.pixels[200 * fb.width + 100]);
+        ::std::thread::sleep(Duration::from_millis(100));
         canvas.clear();
 
         canvas.copy(&texture, None, Some(target)).unwrap();

@@ -11,7 +11,7 @@ pub struct Vertex {
 pub struct Framebuffer {
     pub width: usize,
     pub height: usize,
-    pub pixels: Vec<u32>, // RGBA set-up.
+    pub pixels: Vec<u32>, // RGBA set-up. // This is basically just a huge array.
 }
 
 impl Framebuffer {
